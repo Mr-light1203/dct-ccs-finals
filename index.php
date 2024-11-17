@@ -82,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     <h1 class="h3 mb-4 fw-normal">Login</h1>
                     <form method="post" action="">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="email" name="email" placeholder="user1@example.com">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="user1@example.com"  value="<?= htmlspecialchars($email) ?>">
                             <label for="email">Email address</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?= htmlspecialchars($password) ?>">
                             <label for="password">Password</label>
                         </div>
                         <div class="form-floating mb-3">
