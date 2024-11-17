@@ -3,7 +3,7 @@
 <?php
 
 include("../functions.php");
-guard();
+
 $Pagetitle = "Dashboard";
 include 'partials/header.php';
 include 'partials/side-bar.php';

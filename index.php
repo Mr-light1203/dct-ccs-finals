@@ -3,7 +3,7 @@ session_start(); // Start the session
 
 // Include the necessary functions
 include 'functions.php'; // All database and reusable functions are here
-returnPage();
+
 
 
 // Initialize variables
