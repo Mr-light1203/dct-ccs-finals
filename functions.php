@@ -55,7 +55,22 @@ function loginUser($email, $password) {
     }
 }
 
-
+function guard() {  
+    if (empty($_SESSION["email"])){
+        header("Location:/index.php");
+    }
+}
+function returnPage(){
+    if (!empty($_SESSION["email"])) {
+        if (!empty($_SESSION['page'])) { 
+            header("Location:". $_SESSION['page']);
+            exit();
+        } else {
+            header("Location: /admin/dashboard.php");
+            exit();
+        }
+    }
+}
 
 
 
