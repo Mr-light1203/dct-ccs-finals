@@ -4,15 +4,27 @@ session_start(); // Start the session
 // Include the necessary functions
 include 'functions.php'; // All database and reusable functions are here
 
+// Initialize variables
+$email = '';
+$password = '';
+$errors = [];
+
+$result = null;
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     // Validate input fields
-    if (empty($email) || empty($password)) {
-        $error = "Email and password are required.";
-    } else {
+    if (empty($email)) {
+        $errors[] = "Email Address is required!";
+    }
+    if (empty($password)) {
+        $errors[] = "Password is required!";
+    }
+
+    if (empty($errors)) {
         // Call the login function
         $result = loginUser($email, $password);
 
@@ -23,8 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             header("Location: admin/dashboard.php");
             exit();
         } else {
-            // Login failed
-            $error = $result['message'];
+            // Handle errors safely
+            if (isset($result['message'])) {
+                $errors[] = $result['message'];
+            } elseif (isset($result['errors']) && !empty($result['errors'])) {
+                $errors = array_merge($errors, $result['errors']);
+            } else {
+                $errors[] = "An unknown error occurred. Please try again.";
+            }
         }
     }
 }
@@ -47,12 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="col-3">
             <!-- Server-Side Validation Messages should be placed here -->
-            <?php if (!empty($error)) { ?>
+            <?php if (!empty($errors)) : ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?php echo $error; ?>
+                    <strong>System Errors:</strong> Please correct the following errors:
+                    <hr>
+                    <ul>
+                        <?php foreach ($errors as $error) : ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
             <div class="card">
                 <div class="card-body">
                     <h1 class="h3 mb-4 fw-normal">Login</h1>
