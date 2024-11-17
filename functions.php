@@ -16,6 +16,24 @@
     return $conn;
 }
 function loginUser($email, $password) {
+    $errors = [];
+
+    // Validation logic
+    if (empty($email)) {
+        $errors['email'] = 'Email Address is required!';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Email Address is invalid!';
+    }
+    if (empty($password)) {
+        $errors['password'] = 'Password is required!';
+    }
+
+    // If validation errors exist, return them
+    if (!empty($errors)) {
+        return ['success' => false, 'errors' => $errors];
+    }
+
+    // Proceed to check login credentials in the database
     $conn = connectDatabase();
 
     // Hash the password using MD5
@@ -33,9 +51,10 @@ function loginUser($email, $password) {
         return ['success' => true, 'user' => $user];
     } else {
         // User not found
-        return ['success' => false, 'message' => 'Invalid email or password.'];
+        return ['success' => false, 'errors' => ['credentials' => 'Invalid email or password.']];
     }
 }
+
 
 
 
