@@ -54,7 +54,60 @@ function loginUser($email, $password) {
         return ['success' => false, 'errors' => ['credentials' => 'Invalid email or password.']];
     }
 }
+function addStudent($studentId, $firstName, $lastName) {
+    $conn = connectDatabase(); // Create a database connection
 
+    // Check for duplicate Student ID
+    $checkStmt = $conn->prepare("SELECT * FROM students WHERE student_id = ?");
+    $checkStmt->bind_param("s", $studentId);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows > 0) {
+        $checkStmt->close();
+        $conn->close();
+        return [
+            'success' => false,
+            'message' => 'Student ID already exists. Please use a unique ID.'
+        ];
+    }
+
+    // Insert new student
+    $stmt = $conn->prepare("INSERT INTO students (student_id, first_name, last_name) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $studentId, $firstName, $lastName);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        return [
+            'success' => true,
+            'message' => 'Student added successfully.'
+        ];
+    } else {
+        $error = $conn->error;
+        $stmt->close();
+        $conn->close();
+        return [
+            'success' => false,
+            'message' => 'Error adding student: ' . $error
+        ];
+    }
+}
+
+function getAllStudents() {
+    $conn = connectDatabase(); // Create a database connection
+    $query = "SELECT * FROM students ORDER BY id DESC";
+    $result = $conn->query($query);
+
+    $students = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $students[] = $row;
+        }
+    }
+    $conn->close();
+    return $students;
+}
 
 
 
