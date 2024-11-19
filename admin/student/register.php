@@ -107,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>{$row['last_name']}</td>
                             <td>
                                 <a href='edit.php?id={$row['id']}' class='btn btn-sm btn-info'>Edit</a>
-                                <button class='btn btn-sm btn-danger delete-btn' data-id='{$row['id']}'>Delete</button>
+                                <a href='delete.php?id={$row['id']}' class='btn btn-sm btn-danger'>Delete</a>
+
                                 <button class='btn btn-sm btn-warning delete-btn' data-id='{$row['id']}'>Attach Subject</button>
                             </td>
                         </tr>";
