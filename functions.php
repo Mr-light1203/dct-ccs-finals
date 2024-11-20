@@ -108,7 +108,11 @@ function getAllStudents() {
     $conn->close();
     return $students;
 }
-
+//Logout function 
+function logoutUser() {
+    session_destroy();
+    header("Location:/index.php");
+}
 
 
 
