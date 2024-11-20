@@ -1,5 +1,5 @@
 <?php
-$title = "Link a Subject";
+$Pagetitle = "Attach Subject";
 require_once '../partials/header.php';
 require_once '../partials/side-bar.php';
 require_once '../../functions.php';
@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
                     $stmt->execute();
                     $subjects_available = $stmt->get_result();
 
-                    $message_success = "Subjects successfully linked to the student.";
+                   // $message_success = "Subjects successfully linked to the student.";
                 } else {
                     $message_error = "Please select at least one subject to link.";
                 }
@@ -79,12 +79,12 @@ if (isset($_GET['id'])) {
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
-    <h1 class="h2">Link Subject to Student</h1>
+    <h1 class="h2">Attach Subject to Student</h1>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="../student/register.php">Register Student</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Link Subject to Student</li>
+            <li class="breadcrumb-item active" aria-current="page">Attach Subject to Student</li>
         </ol>
     </nav>
 
@@ -103,7 +103,7 @@ if (isset($_GET['id'])) {
 
                 <!-- Form to Link Subjects -->
                 <form method="post" action="">
-                    <p><strong>Select Subjects to Link:</strong></p>
+                    <hr>
                     <?php if ($subjects_available->num_rows > 0): ?>
                         <?php while ($subject = $subjects_available->fetch_assoc()): ?>
                             <div class="form-check">
@@ -113,7 +113,7 @@ if (isset($_GET['id'])) {
                                 </label>
                             </div>
                         <?php endwhile; ?>
-                        <button type="submit" name="link_subjects" class="btn btn-primary mt-3">Link Subjects</button>
+                        <button type="submit" name="link_subjects" class="btn btn-primary mt-3">Attach Subjects</button>
                     <?php else: ?>
                         <p>No available subjects to link.</p>
                     <?php endif; ?>
@@ -123,7 +123,7 @@ if (isset($_GET['id'])) {
 
         <!-- Linked Subjects Table -->
         <hr>
-        <h3>Linked Subjects</h3>
+        <h3>Subject List</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -143,18 +143,18 @@ if (isset($_GET['id'])) {
                             <td>
                                 <form method="get" action="unlink-subject.php" style="display:inline-block;">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm">Unlink</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Detach</button>
                                 </form>
                                 <form method="post" action="update-grade.php" style="display:inline-block;">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" class="btn btn-success btn-sm">Update Grade</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Assign Grade</button>
                                 </form>
                             </td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4">No linked subjects found.</td>
+                        <td colspan="4">No attached subjects found.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
