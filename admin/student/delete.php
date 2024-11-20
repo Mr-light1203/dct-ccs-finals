@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
-    <div class="container">
+    <div>
         <!-- Content here -->
         <h2>Delete a Student</h2>
         <nav aria-label="breadcrumb">
@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Confirmation Form -->
         <?php if (isset($student)): ?>
-            <div class="card">
-                <div class="card-body">
+            <div>
+                <div>
                     <p>Are you sure you want to delete the following student record?</p>
                     <ul>
                         <li><strong>Student ID:</strong> <?php echo $student['student_id']; ?></li>

@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
-    <div class="container">
+    <div>
         <h2>Edit Student</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Edit Form -->
         <?php if (isset($student)): ?>
-            <div class="card">
-                <div class="card-body">
+            <div>
+                <div>
                     <form action="" method="POST">
                         <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                         <div class="mb-3">

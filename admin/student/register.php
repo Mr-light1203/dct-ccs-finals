@@ -15,7 +15,7 @@ $success_msg = '';
 // Form submission and student registration logic
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_student = [
-        'id_number' => sanitizeStudentId(trim($_POST['student_id'] ?? '')),
+        'id_number' => getStudentIdPrefix(trim($_POST['student_id'] ?? '')),
         'first_name' => trim($_POST['first_name'] ?? ''),
         'last_name' => trim($_POST['last_name'] ?? '')
     ];
@@ -82,11 +82,6 @@ function registerNewStudent($new_student) {
     <?php if (!empty($errors)): ?>
         <?php echo $errors; ?>
     <?php endif; ?>
-
-    <?php if (!empty($success_msg)): ?>
-        <?php echo $success_msg; ?>
-    <?php endif; ?>
-
     <!-- Registration form -->
     <form method="post" action="">
         <div class="mb-3">
@@ -112,7 +107,7 @@ function registerNewStudent($new_student) {
     <hr>
 
     <!-- List of students -->
-    <h2 class="h4">List of Students</h2>
+    <h2 class="h4">Student List</h2>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -141,6 +136,7 @@ function registerNewStudent($new_student) {
             <?php $db->close(); ?>
         </tbody>
     </table>
+
 </main>
 
 <?php include_once '../partials/footer.php'; ?>
