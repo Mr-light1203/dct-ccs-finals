@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include("../../functions.php");
 $Pagetitle = "Edit Student";
 include("../partials/header.php");
@@ -28,6 +29,7 @@ if (isset($_GET['id'])) {
 }
 
 // Handle form submission
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $studentId = $_POST['id'];
     $updatedFirstName = trim($_POST['firstName']);
@@ -41,7 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssi", $updatedFirstName, $updatedLastName, $studentId);
 
         if ($stmt->execute()) {
-            $successMessage = "Student details updated successfully!";
+            $stmt->close();
+            $conn->close();
+            // Redirect to register.php with a success message
+            header("Location: register.php?message=updated");
+            exit(); // Always exit after header to prevent further script execution
         } else {
             $errorMessage = "Failed to update student details!";
         }
@@ -50,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->close();
     }
 }
+
 ?>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
     <div class="container">
@@ -64,16 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Alerts -->
         <?php if ($errorMessage): ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $errorMessage; ?>
-            </div>
-        <?php endif; ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo $errorMessage; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
-        <?php if ($successMessage): ?>
-            <div class="alert alert-success" role="alert">
-                <?php echo $successMessage; ?>
-            </div>
-        <?php endif; ?>
+<?php if ($successMessage): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo $successMessage; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
         <!-- Edit Form -->
         <?php if (isset($student)): ?>
@@ -93,7 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="lastName" class="form-label">Last Name</label>
                             <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $student['last_name']; ?>">
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Student</button>
+                        <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary w-100">Update Student</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -102,4 +113,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </main>
 <?php
 include("../partials/footer.php");
+
 ?>

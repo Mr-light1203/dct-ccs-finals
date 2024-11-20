@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 include("../../functions.php");
 $Pagetitle = "Delete Student";
 include("../partials/header.php");
@@ -37,8 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("i", $studentIdToDelete);
 
         if ($stmt->execute()) {
-            $successMessage = "Student record deleted successfully!";
-            header("Location: register.php?message=deleted");
+            $stmt->close();
+            $conn->close();
+            header("Location: register.php?message=deleted"); // Redirect after successful deletion
             exit();
         } else {
             $errorMessage = "Failed to delete the student record!";
@@ -52,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
     <div class="container">
+        <!-- Content here -->
         <h2>Delete a Student</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -87,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form action="" method="POST">
                         <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                         <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete Student Record</button>
+                        <button type="submit" class="btn btn-primary">Delete Student Record</button>
                     </form>
                 </div>
             </div>
@@ -97,4 +100,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php
 include("../partials/footer.php");
+ob_end_flush(); // End and flush the buffer
 ?>

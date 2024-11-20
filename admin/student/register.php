@@ -51,15 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li class="breadcrumb-item active" aria-current="page">Register Student</li>
         </ol>
     </nav>
-     <!-- Dismissable Alert -->
-     <?php if ($errorMessage): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?php echo $errorMessage; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    
+    <!-- Dismissable Alert -->
+    <?php if ($errorMessage): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $errorMessage; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
-
-  
 
     <!-- Registration Form -->
     <div class="card">
@@ -67,17 +66,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="POST">
                 <div class="mb-3">
                     <label for="studentId" class="form-label">Student ID</label>
-                    <input type="text" class="form-control" id="studentId" name="studentId" placeholder="Enter Student ID" >
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="studentId" 
+                        name="studentId" 
+                        placeholder="Enter Student ID" 
+                        value="<?php echo isset($_POST['studentId']) ? htmlspecialchars($_POST['studentId']) : ''; ?>"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name" >
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="firstName" 
+                        name="firstName" 
+                        placeholder="Enter First Name" 
+                        value="<?php echo isset($_POST['firstName']) ? htmlspecialchars($_POST['firstName']) : ''; ?>"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Last Name" >
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="lastName" 
+                        name="lastName" 
+                        placeholder="Enter Last Name" 
+                        value="<?php echo isset($_POST['lastName']) ? htmlspecialchars($_POST['lastName']) : ''; ?>"
+                    >
                 </div>
-                <button type="submit" class="btn btn-primary">Add Student</button>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-100">Add Student</button>
+                </div>
             </form>
         </div>
     </div>
@@ -98,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tbody>
                 <?php
                 $conn = connectDatabase();
-                $result = $conn->query("SELECT * FROM students ORDER BY id DESC");
+                $result = $conn->query("SELECT * FROM students ORDER BY id ASC");
 
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
@@ -108,7 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                                 <a href='edit.php?id={$row['id']}' class='btn btn-sm btn-info'>Edit</a>
                                 <a href='delete.php?id={$row['id']}' class='btn btn-sm btn-danger'>Delete</a>
-
                                 <button class='btn btn-sm btn-warning delete-btn' data-id='{$row['id']}'>Attach Subject</button>
                             </td>
                         </tr>";
@@ -125,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php 
 include("../partials/footer.php");
 ?>
+
 
 
 
