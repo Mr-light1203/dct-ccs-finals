@@ -114,57 +114,43 @@ function logoutUser() {
     header("Location:/index.php");
 }
 
-function getStudentDetailsById($studentId) {
-    $dbConnection = connectDatabase();
-
-    if ($dbConnection) {
-        $sqlQuery = "SELECT * FROM students WHERE id = ?";
-        $stmt = $dbConnection->prepare($sqlQuery);
-
-        if ($stmt) {
-            $stmt->bind_param('i', $studentId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $studentDetails = $result->fetch_assoc();
-
-            $stmt->close();
-        } else {
-            return ['error' => 'Failed to prepare the SQL statement.'];
-        }
-
-        $dbConnection->close();
-        
-        return $studentDetails ?: ['error' => 'Student not found.'];
-    } else {
-        return ['error' => 'Database connection failed.'];
-    }
+function sanitizeId($id) {
+    return substr($id, 0, 4);
 }
 
-function generateAlertBox($messages, $alertType = 'danger') {
-    // Return an empty string if no messages are provided
-    if (empty($messages)) {
+function getStudentDetails($id) {
+    $db = connectDatabase();
+    $query = "SELECT * FROM students WHERE id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $details = $result->fetch_assoc();
+
+    $stmt->close();
+    $db->close();
+
+    return $details;
+}
+
+function showNotification($message, $type = 'danger') {
+    if (!$message) {
         return '';
     }
 
-    // Ensure $messages is always an array for consistent processing
-    $messages = (array) $messages;
-
-    // Initialize the alert box HTML structure
-    $alertHTML = '<div class="alert alert-' . htmlspecialchars($alertType) . ' alert-dismissible fade show" role="alert">';
-
-    // Loop through messages and create list items
+    $message = (array)$message;
+    $alertHTML = '<div class="alert alert-' . htmlspecialchars($type) . ' alert-dismissible fade show" role="alert">';
     $alertHTML .= '<ul>';
-    foreach ($messages as $message) {
-        $alertHTML .= '<li>' . htmlspecialchars($message) . '</li>';
+    foreach ($message as $msg) {
+        $alertHTML .= '<li>' . htmlspecialchars($msg) . '</li>';
     }
     $alertHTML .= '</ul>';
-
-    // Add close button for dismissing the alert
     $alertHTML .= '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
     $alertHTML .= '</div>';
 
     return $alertHTML;
 }
+
 
 
 
