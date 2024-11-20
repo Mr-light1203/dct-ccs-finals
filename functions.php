@@ -114,6 +114,58 @@ function logoutUser() {
     header("Location:/index.php");
 }
 
+function getStudentDetailsById($studentId) {
+    $dbConnection = connectDatabase();
+
+    if ($dbConnection) {
+        $sqlQuery = "SELECT * FROM students WHERE id = ?";
+        $stmt = $dbConnection->prepare($sqlQuery);
+
+        if ($stmt) {
+            $stmt->bind_param('i', $studentId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $studentDetails = $result->fetch_assoc();
+
+            $stmt->close();
+        } else {
+            return ['error' => 'Failed to prepare the SQL statement.'];
+        }
+
+        $dbConnection->close();
+        
+        return $studentDetails ?: ['error' => 'Student not found.'];
+    } else {
+        return ['error' => 'Database connection failed.'];
+    }
+}
+
+function generateAlertBox($messages, $alertType = 'danger') {
+    // Return an empty string if no messages are provided
+    if (empty($messages)) {
+        return '';
+    }
+
+    // Ensure $messages is always an array for consistent processing
+    $messages = (array) $messages;
+
+    // Initialize the alert box HTML structure
+    $alertHTML = '<div class="alert alert-' . htmlspecialchars($alertType) . ' alert-dismissible fade show" role="alert">';
+
+    // Loop through messages and create list items
+    $alertHTML .= '<ul>';
+    foreach ($messages as $message) {
+        $alertHTML .= '<li>' . htmlspecialchars($message) . '</li>';
+    }
+    $alertHTML .= '</ul>';
+
+    // Add close button for dismissing the alert
+    $alertHTML .= '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    $alertHTML .= '</div>';
+
+    return $alertHTML;
+}
+
 
 
 ?>
