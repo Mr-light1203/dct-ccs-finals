@@ -147,7 +147,7 @@ if (isset($_GET['id'])) {
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Detach</button>
                                 </form>
-                                <form method="post" action="update-grade.php" style="display:inline-block;">
+                                <form method="post" action="assign-grade.php" style="display:inline-block;">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn btn-success btn-sm">Assign Grade</button>
                                 </form>
