@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Confirmation Form -->
         <?php if (isset($student)): ?>
-            <div>
-                <div>
+            <div class = "card">
+                <div class = "card-body">
                     <p>Are you sure you want to delete the following student record?</p>
                     <ul>
                         <li><strong>Student ID:</strong> <?php echo $student['student_id']; ?></li>

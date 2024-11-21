@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
-    <div class="container">
+    <div>
         <h2>Add a New Subject</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">

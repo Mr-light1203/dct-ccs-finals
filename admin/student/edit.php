@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Edit Form -->
         <?php if (isset($student)): ?>
-            <div>
-                <div>
+            <div class = "card">
+                <div class = "card-body">
                     <form action="" method="POST">
                         <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                         <div class="mb-3">

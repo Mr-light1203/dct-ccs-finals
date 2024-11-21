@@ -123,6 +123,8 @@ if (isset($_GET['id'])) {
 
         <!-- Linked Subjects Table -->
         <hr>
+        <div class = "card">
+        <div class = "card-body">
         <h3>Subject List</h3>
         <table class="table">
             <thead>
@@ -159,6 +161,8 @@ if (isset($_GET['id'])) {
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
+</div>
     <?php endif; ?>
 </main>
 

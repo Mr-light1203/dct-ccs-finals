@@ -84,6 +84,8 @@ function registerNewStudent($new_student) {
     <?php endif; ?>
     <!-- Registration form -->
     <form method="post" action="">
+    <div class = "card">
+        <div class = "card-body">
         <div class="mb-3">
             <label for="student_id" class="form-label">Student ID</label>
             <input type="text" class="form-control" id="student_id" name="student_id" placeholder="Enter Student ID" value="<?php echo htmlspecialchars($_POST['student_id'] ?? ''); ?>">
@@ -103,10 +105,13 @@ function registerNewStudent($new_student) {
             <button type="submit" class="btn btn-primary w-100">Register Student</button>
         </div>
     </form>
-
+</div>
+</div>
     <hr>
 
     <!-- List of students -->
+     <div class = "card">
+    <div class = "card-body">
     <h2 class="h4">Student List</h2>
     <table class="table table-striped">
         <thead>
@@ -136,7 +141,8 @@ function registerNewStudent($new_student) {
             <?php $db->close(); ?>
         </tbody>
     </table>
-
+</div>
+</div>
 </main>
 
 <?php include_once '../partials/footer.php'; ?>
