@@ -114,7 +114,7 @@ function logoutUser() {
     header("Location:/index.php");
 }
 
-function sanitizeId($id) {
+function getStudentIdPrefix($id) {
     return substr($id, 0, 4);
 }
 
@@ -150,8 +150,68 @@ function showNotification($message, $type = 'danger') {
 
     return $alertHTML;
 }
+function verifyStudentData($data) {
+    $validation_errors = [];
+    if (empty($data['id_number'])) {
+        $validation_errors[] = "Student ID is required.";
+    }
+    if (empty($data['first_name'])) {
+        $validation_errors[] = "First Name is required.";
+    }
+    if (empty($data['last_name'])) {
+        $validation_errors[] = "Last Name is required.";
+    }
 
+    return $validation_errors;
+}
+function isStudentIdDuplicate($data) {
+    $db = connectDatabase();
+    $sql = "SELECT * FROM students WHERE student_id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param('s', $data['id_number']);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
+    if ($res->num_rows > 0) {
+        return "This Student ID is already taken.";
+    }
+
+    return '';
+}
+function createUniqueStudentId() {
+    $db = connectDatabase();
+    $query = "SELECT MAX(id) AS current_max FROM students";
+    $result = $db->query($query);
+    $data = $result->fetch_assoc();
+    $db->close();
+
+    return ($data['current_max'] ?? 0) + 1;
+}
+
+function sanitizeStudentId($id) {
+    return substr($id, 0, 4);
+}
+function displayAlert($messages, $alertType = 'danger') {
+    // Return an empty string if there are no messages
+    if (!$messages) {
+        return '';
+    }
+
+    // Convert single message to an array for consistent handling
+    $messages = (array) $messages;
+
+    // Build the alert box HTML
+    $alertHTML = '<div class="alert alert-' . htmlspecialchars($alertType) . ' alert-dismissible fade show" role="alert">';
+    $alertHTML .= '<ul>';
+    foreach ($messages as $message) {
+        $alertHTML .= '<li>' . htmlspecialchars($message) . '</li>';
+    }
+    $alertHTML .= '</ul>';
+    $alertHTML .= '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    $alertHTML .= '</div>';
+
+    return $alertHTML;
+}
 
 
 ?>
