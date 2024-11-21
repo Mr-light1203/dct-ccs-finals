@@ -115,7 +115,7 @@ if (isset($_GET['id'])) {
                         <?php endwhile; ?>
                         <button type="submit" name="link_subjects" class="btn btn-primary mt-3">Attach Subjects</button>
                     <?php else: ?>
-                        <p>No available subjects to link.</p>
+                        <p>No available subjects to attach.</p>
                     <?php endif; ?>
                 </form>
             </div>
