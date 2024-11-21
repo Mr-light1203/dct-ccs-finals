@@ -212,7 +212,71 @@ function displayAlert($messages, $alertType = 'danger') {
 
     return $alertHTML;
 }
+/**
+ * Get the count of passed students (grade >= 75).
+ * 
+ * @param mysqli $connection
+ * @return int The count of passed students
+ */
+function getPassedStudentsCount($connection)
+{
+    $query = "SELECT COUNT(DISTINCT student_id) AS passed_count 
+              FROM students_subjects 
+              WHERE grade >= 75";
+    $result = $connection->query($query);
+    return $result->fetch_assoc()['passed_count'] ?? 0;
+}
 
+/**
+ * Get the count of failed students (grade < 75).
+ * 
+ * @param mysqli $connection
+ * @return int The count of failed students
+ */
+function getFailedStudentsCount($connection)
+{
+    $query = "SELECT COUNT(DISTINCT student_id) AS failed_count 
+              FROM students_subjects 
+              WHERE grade < 75 AND grade IS NOT NULL";
+    $result = $connection->query($query);
+    return $result->fetch_assoc()['failed_count'] ?? 0;
+}
+/**
+ * Fetch the total number of registered students.
+ * 
+ * @param object $db The database connection.
+ * @return int The total number of students.
+ */
+function getTotalStudents($db) {
+    $query = "SELECT COUNT(*) AS total_students FROM students";
+    $result = $db->query($query);
+
+    if ($result) {
+        $row = $result->fetch_assoc();
+        return (int) $row['total_students'];
+    } else {
+        return 0; // Return 0 if the query fails
+    }
+}
+
+
+/**
+ * Fetch the total number of subjects from the database.
+ * 
+ * @param object $db The database connection.
+ * @return int The total number of subjects.
+ */
+function getTotalSubjects($db) {
+    $query = "SELECT COUNT(*) AS total_subjects FROM subjects";
+    $result = $db->query($query);
+
+    if ($result) {
+        $row = $result->fetch_assoc();
+        return (int) $row['total_subjects'];
+    } else {
+        return 0; // Return 0 if the query fails
+    }
+}
 
 ?>
 
