@@ -143,7 +143,7 @@ if (isset($_GET['id'])) {
                             <td><?php echo htmlspecialchars($row['subject_name']); ?></td>
                             <td><?php echo $row['grade'] > 0 ? number_format($row['grade'], 2) : '--.--'; ?></td>
                             <td>
-                                <form method="get" action="unlink-subject.php" style="display:inline-block;">
+                                <form method="get" action="detach-subject.php" style="display:inline-block;">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Detach</button>
                                 </form>
