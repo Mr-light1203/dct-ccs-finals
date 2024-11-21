@@ -213,31 +213,43 @@ function displayAlert($messages, $alertType = 'danger') {
     return $alertHTML;
 }
 /**
- * Get the count of passed students (grade >= 75).
+ * Get the count of students who passed based on their average grade (>= 75).
  * 
  * @param mysqli $connection
- * @return int The count of passed students
+ * @return int The count of students who passed.
  */
 function getPassedStudentsCount($connection)
 {
-    $query = "SELECT COUNT(DISTINCT student_id) AS passed_count 
-              FROM students_subjects 
-              WHERE grade >= 75";
+    $query = "
+        SELECT COUNT(*) AS passed_count
+        FROM (
+            SELECT student_id, AVG(grade) AS avg_grade
+            FROM students_subjects
+            WHERE grade IS NOT NULL
+            GROUP BY student_id
+            HAVING avg_grade >= 75
+        ) AS passed_students";
     $result = $connection->query($query);
     return $result->fetch_assoc()['passed_count'] ?? 0;
 }
 
 /**
- * Get the count of failed students (grade < 75).
+ * Get the count of students who failed based on their average grade (< 75).
  * 
  * @param mysqli $connection
- * @return int The count of failed students
+ * @return int The count of students who failed.
  */
 function getFailedStudentsCount($connection)
 {
-    $query = "SELECT COUNT(DISTINCT student_id) AS failed_count 
-              FROM students_subjects 
-              WHERE grade < 75 AND grade IS NOT NULL";
+    $query = "
+        SELECT COUNT(*) AS failed_count
+        FROM (
+            SELECT student_id, AVG(grade) AS avg_grade
+            FROM students_subjects
+            WHERE grade IS NOT NULL
+            GROUP BY student_id
+            HAVING avg_grade < 75
+        ) AS failed_students";
     $result = $connection->query($query);
     return $result->fetch_assoc()['failed_count'] ?? 0;
 }
